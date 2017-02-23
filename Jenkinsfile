@@ -6,7 +6,7 @@ stage('Start - Pull Request Merged') {
 stage('Dev') {
    parallel(Build: {
 	node{
-     		git 'https://github.com/santapau/bodgeit.git'
+		sh 'git pull'
      		sh 'ant compile build'
 	} 
     }, UnitTest: {
