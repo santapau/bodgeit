@@ -6,7 +6,7 @@ stage('Start - Pull Request Merged') {
 stage('Dev') {
    parallel(Build: {
 	node{
-		sh 'git pull'
+		sh 'git branch --set-upstream-to=origin/master master && git pull'
      		sh 'ant compile build'
 	} 
     }, UnitTest: {
