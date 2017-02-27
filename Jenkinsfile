@@ -28,8 +28,10 @@ stage('QA') {
         runTests(2)
     }, ZAP_BDDSecurity: {
         node {
+            sh 'cp -r bdd-security/config_staging.xml    /var/jenkins_home/bdd-security/config.xml'
+            sh 'cp -r bdd-security/src/* /var/jenkins_home/bdd-security/src/'
             dir ('/var/jenkins_home/bdd-security/') {
-                def returnStatus= sh (script:'./gradlew -Dcucumber.options="--tags @http_headers --tags ~@skip"', returnStatus:true)
+                def returnStatus= sh (script:'./gradlew -Dcucumber.options="--tags @app_scan --tags ~@skip"', returnStatus:true)
                 publishHTML (target: [
                     allowMissing: false,
                     alwaysLinkToLastBuild: false,
@@ -38,11 +40,11 @@ stage('QA') {
                     reportFiles: 'feature-overview.html',
                     reportName: "Staging_ZAP_BDD-Security Report"
                 ])
-               if (returnStatus != 0)
+               /* if (returnStatus != 0)
                 {
                     error("ZAP_BDDSecurity failed")
  
-                }
+                }*/
             }
         }
     })
@@ -61,6 +63,8 @@ stage('QA') {
         runTests(2)
     }, BDDSecurity: {
          node {
+            sh 'cp -r bdd-security/* /var/jenkins_home/bdd-security/'
+            sh 'cp -r bdd-security/src/test/java/net/continuumsecurity/examples/* /var/jenkins_home/bdd-security/src/test/java/net/continuumsecurity/examples/'
             dir ('/var/jenkins_home/bdd-security/') {
                 def returnStatus= sh (script:'./gradlew -Dcucumber.options="--tags @http_headers --tags ~@skip"', returnStatus:true)
                 publishHTML (target: [
@@ -106,3 +110,4 @@ def runTests(duration) {
         echo "tests"
     }
 }
+
