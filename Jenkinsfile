@@ -8,6 +8,7 @@ stage('Dev') {
 	node{
 		sh 'git branch --set-upstream-to=origin/master master && git pull'
      		sh 'ant compile build'
+		sh 'wget http://localhost:9090/project/my_cool_web_app/risk -O - -q'
 	} 
     }, UnitTest: {
         runTests(2)
