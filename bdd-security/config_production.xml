@@ -11,7 +11,7 @@
 
     <defaultDriver>firefox</defaultDriver>
     <!-- Base URL of the application to test -->
-    <baseUrl>http://192.168.1.150:9090/bodgeit</baseUrl>
+    <baseUrl>http://bodgeitproduction:8080/</baseUrl>
 
     <!-- A Java class to hold the Selenium steps to test the application in depth. Optionally required for in-depth authn/z and session management testing. -->
     <class>net.continuumsecurity.examples.bodgeit.BodgeitTasksApplication</class>
