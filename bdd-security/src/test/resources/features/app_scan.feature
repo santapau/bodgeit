@@ -18,10 +18,10 @@ Feature: Automated Application Security Scanning
     When the scanner is run
     And the following false positives are removed
       |url                                        |parameter          |cweId    |wascId   |
-      |http://192.168.1.150:8989/bodgeit/advanced.jsp | q                 | 89      | 19      |
-      |http://192.168.1.150:8989/bodgeit/basket.jsp   | productid         | 89      | 19      |
-      |http://192.168.1.150:8989/bodgeit/basket.jsp   | update            | 89      | 19      |
-      |http://192.168.1.150:8989/bodgeit/register.jsp | username          | 89      | 19      |
+      |http://bodgeitstaging:8080/bodgeit/advanced.jsp | q                 | 89      | 19      |
+      |http://bodgeitstaging:8080/bodgeit/basket.jsp   | productid         | 89      | 19      |
+      |http://bodgeitstaging:8080/bodgeit/basket.jsp   | update            | 89      | 19      |
+      |http://bodgeitstaging:8080/bodgeit/register.jsp | username          | 89      | 19      |
 
 
     And the XML report is written to the file build/zap/sql_injection.xml
