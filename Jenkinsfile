@@ -10,10 +10,17 @@ stage('Dev') {
 	node{
 		sh 'git branch --set-upstream-to=origin/master master && git pull'
      	sh 'ant compile build'
-     	sh 'wget http://localhost:9090/project/my_cool_web_app/risk -O - --content-on-error -q > tmp'
+	} 
+    },CheckRisk: {
+       node{
+        sh 'wget http://localhost:9090/project/my_cool_web_app/risk -O - --content-on-error -q > tmp'
         env.RISK = readFile('tmp').trim()
         echo "${env.RISK}"
-	} 
+        if (Integer.parseInt(env.RISK) > 35){
+            error("Too risky application")
+        }
+       }
+        
     }, UnitTest: {
         runTests(2)
     }, IntegrationTests: {
@@ -21,7 +28,7 @@ stage('Dev') {
     })
 }
 
-stage('QA') {
+stage('QA_Staging') {
     parallel(FunctionalTests: {
         runTests(2)
     }, PerformaceTests: {
@@ -40,11 +47,11 @@ stage('QA') {
                     reportFiles: 'feature-overview.html',
                     reportName: "Staging_ZAP_BDD-Security Report"
                 ])
-               /* if (returnStatus != 0)
+                if (returnStatus != 0)
                 {
                     error("ZAP_BDDSecurity failed")
  
-                }*/
+                }
             }
         }
     })
@@ -56,7 +63,7 @@ stage('Staging') {
     milestone 2
 }
 
-stage('QA') {
+stage('QA_Prod') {
     parallel(SmokeTests: {
         runTests(2)
     }, RegressionTests: {
@@ -66,7 +73,7 @@ stage('QA') {
             sh 'cp -r bdd-security/* /var/jenkins_home/bdd-security/'
             sh 'cp -r bdd-security/src/test/java/net/continuumsecurity/examples/* /var/jenkins_home/bdd-security/src/test/java/net/continuumsecurity/examples/'
             dir ('/var/jenkins_home/bdd-security/') {
-                def returnStatus= sh (script:'./gradlew -Dcucumber.options="--tags @http_headers --tags ~@skip"', returnStatus:true)
+                /*def returnStatus= sh (script:'./gradlew -Dcucumber.options="--tags @http_headers --tags ~@skip"', returnStatus:true)
                 publishHTML (target: [
                     allowMissing: false,
                     alwaysLinkToLastBuild: false,
@@ -79,7 +86,7 @@ stage('QA') {
                 {
                     error("BDDSecurity failed")
  
-                }
+                }*/
             }
         }
     })
