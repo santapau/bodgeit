@@ -22,7 +22,7 @@ Feature: Authorisation and Access Control
       | viewAllUsers        | admin    | password | User List                   |
 
 
-  @cwe-639
+  @iriusrisk-cwe-639
   Scenario Outline: Users must not be able to view resources for which they are not authorised
     Given the access control map for authorised users has been populated
     And a new browser or client instance
@@ -39,7 +39,7 @@ Feature: Authorisation and Access Control
       | viewAllUsers        | alice    | password | User List                   |
       | viewAllUsers        | bob      | password | User List                   |
 
-  @cwe-306
+  @iriusrisk-cwe-306
   Scenario Outline: Un-authenticated users should not be able to view restricted resources
     Given the access control map for authorised users has been populated
     And a new browser or client instance
